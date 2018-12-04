@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClassLibrary1
+namespace ParkingAds
 {
     public class Class1
     {
