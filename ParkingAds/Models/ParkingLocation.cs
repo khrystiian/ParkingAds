@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using System.Collections.Generic;
-namespace Models
+namespace ParkingAds.Models
 {
     [XmlRoot(ElementName = "parkinglocation")]
     public class ParkingLocation
