@@ -42,7 +42,7 @@ namespace BusinessLogic
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception caught while sending email: {0}", ex.ToString());
+                System.Diagnostics.Debug.WriteLine("Exception caught while sending email: {0}", ex.ToString());
             }
             return ok;
         }
