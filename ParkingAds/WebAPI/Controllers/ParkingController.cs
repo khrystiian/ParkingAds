@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Web.Http;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +22,16 @@ namespace WebAPI.Controllers
         [HttpGet]
         public List<ParkingLocation> Get()
         {
-            return _park.GetParking();
+            return _park.GetAllParking();
         }
 
         // GET: api/Parking/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get1(int id)
+        [HttpGet("{name}", Name = "Get")]
+        public ParkingLocation Get(string name)
         {
-            return "value";
+
+                return _park.GetParking(name);
+
         }
 
         // POST: api/Parking

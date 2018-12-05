@@ -5,6 +5,7 @@ namespace BusinessLogic
 {
     public interface IParkingLogic
     {
-        List<ParkingLocation> GetParking();
+        List<ParkingLocation> GetAllParking();
+        ParkingLocation GetParking(string name);
     }
 }

@@ -14,10 +14,8 @@ namespace BusinessLogic
 {
     public class Cacher
     {
-
         public static Ad CachedAd = new Ad();
         public static List<ParkingLocation> CachedParking = new List<ParkingLocation>();
-
 
         public static void Start()
         {
@@ -56,8 +54,6 @@ namespace BusinessLogic
 
                     }
                 }
-
-
             }
         }
 
