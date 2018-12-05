@@ -7,26 +7,67 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Serialization;
 using Models;
+using Newtonsoft.Json.Linq;
+using ParkingAds.Models;
 
 namespace BusinessLogic
 {
     public class Cacher
     {
 
-        public static Ad cachedAd = new Ad();
+        public static Ad CachedAd = new Ad();
+        public static List<ParkingLocation> CachedParking = new List<ParkingLocation>();
+
+
         public static void Start()
         {
-            Thread printer = new Thread(new ThreadStart(InvokeMethod));
-            printer.Start();
+            Thread adthread = new Thread(new ThreadStart(InvokeAdCaching));
+            Thread parkingthread = new Thread(new ThreadStart(InvokeParkingCaching));
+
+            adthread.Start();
+            parkingthread.Start();
+        }
+        static void InvokeParkingCaching()
+        {
+            while (true)
+            {
+                ParkingCacher();
+                Thread.Sleep(1000 * 10); // 10 seconds update rate
+                //Have a break
+            }
         }
 
-        static void InvokeMethod()
+        static void ParkingCacher()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    var response = httpClient.GetStringAsync(new Uri("http://ucn-parking.herokuapp.com/places.json")).Result;
+
+                    CachedParking = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ParkingLocation>>(response); ;
+                }
+                catch
+                {
+                    // If http error or network error or alternative error
+                    // if failure is on first request then put placeholder, otherwise just keeps old one
+                    if (CachedParking == null)
+                    {
+
+                    }
+                }
+
+
+            }
+        }
+
+        static void InvokeAdCaching()
         {
             while (true)
             {
                 AdCacher();
                 Thread.Sleep(1000 * 60 * 2); // 2 Minutes
-                //Have a break condition
+                //Have a break
             }
         }
 
@@ -45,7 +86,7 @@ namespace BusinessLogic
                     //use regexp to see if actually image or weirdly implemented error message
                     if (Regex.IsMatch(t.ImageData, @"^[a-zA-Z0-9\+/]*={0,2}$"))
                     {
-                        cachedAd = t;
+                        CachedAd = t;
                     }
                     else
                     {
@@ -55,11 +96,11 @@ namespace BusinessLogic
                 }
                 catch
                 {
-                    // If http error or network error
+                    // If http error or network error or alternative error
                     // if failure is on first request then put placeholder, otherwise just keeps old one
-                    if (cachedAd == null)
+                    if (CachedAd == null)
                     {
-                        cachedAd.ImageData = "imagine this is a placeholder base64 string";
+                        CachedAd.ImageData = "imagine this is a placeholder base64 string";
                     }
                 }
 
