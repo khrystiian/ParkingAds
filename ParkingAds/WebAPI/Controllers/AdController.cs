@@ -17,7 +17,8 @@ namespace WebAPI.Controllers
         [HttpGet]
         public string Get()
         {
-            return _ad.GetAd();
+            var a = _ad.GetAd();
+            return a;
 
         }
 
