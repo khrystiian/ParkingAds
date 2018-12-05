@@ -1,23 +1,37 @@
-﻿using Models;
-using System;
-using System.Data;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Xml.Linq;
+using System.Text;
+using System.Threading;
 using System.Xml.Serialization;
-using BusinessLogic;
+using Models;
 
-namespace ParkingAds.BusinessLogic
+namespace BusinessLogic
 {
-    public class AdLogic : IAdLogic
+    public class Cacher
     {
-        public Ad cachedAd = new Ad();
-        public string GetAd()
+
+        public static Ad cachedAd = new Ad();
+        public static void Start()
         {
-            return Cacher.cachedAd.ImageData;
+            AdCacher();
+            Thread printer = new Thread(new ThreadStart(InvokeMethod));
+            printer.Start();
         }
 
-        public string CacheAd()
+        static void InvokeMethod()
+        {
+            while (true)
+            {
+                AdCacher();
+                Thread.Sleep(1000 * 60 * 2); // 2 Minutes
+                //Have a break condition
+            }
+        }
+
+
+        static void AdCacher()
         {
             using (var httpClient = new HttpClient())
             {
@@ -31,20 +45,19 @@ namespace ParkingAds.BusinessLogic
 
                     t.TimeStamp = DateTime.Now;
                     cachedAd = t;
-                    return t.ImageData;
                 }
                 catch
                 {
-                    if (cachedAd==null)
+                    if (cachedAd == null)
                     {
-                        return "imagine this is a placeholder base64 string";
+                        cachedAd.ImageData = "imagine this is a placeholder base64 string";
                     }
-                    return cachedAd.ImageData;
                 }
 
 
             }
         }
+
 
     }
 }
