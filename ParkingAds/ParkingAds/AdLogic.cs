@@ -13,7 +13,7 @@ namespace ParkingAds.BusinessLogic
         public Ad cachedAd = new Ad();
         public string GetAd()
         {
-            if (cachedAd.ImageData==null || (cachedAd.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
+            if (cachedAd.ImageData==null)
             {
                 /*
                 if (cachedAd != null)
