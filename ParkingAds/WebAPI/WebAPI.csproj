@@ -5,13 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\Mapping\**" />
-    <Content Remove="Controllers\Mapping\**" />
-    <EmbeddedResource Remove="Controllers\Mapping\**" />
-    <None Remove="Controllers\Mapping\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Folder Include="Controllers\Mapping\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

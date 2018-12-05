@@ -19,9 +19,6 @@ namespace WebAPI.Controllers
         {
             var a = _ad.GetAd();
             return a;
-
         }
-
-        
     }
 }
