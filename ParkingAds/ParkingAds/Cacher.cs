@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Serialization;
 using Models;
@@ -15,7 +16,6 @@ namespace BusinessLogic
         public static Ad cachedAd = new Ad();
         public static void Start()
         {
-            AdCacher();
             Thread printer = new Thread(new ThreadStart(InvokeMethod));
             printer.Start();
         }
@@ -30,7 +30,6 @@ namespace BusinessLogic
             }
         }
 
-
         static void AdCacher()
         {
             using (var httpClient = new HttpClient())
@@ -43,11 +42,21 @@ namespace BusinessLogic
                     var ser = new XmlSerializer(typeof(Ad));
                     var t = (Ad)ser.Deserialize(data.Content.ReadAsStreamAsync().Result);
 
-                    t.TimeStamp = DateTime.Now;
-                    cachedAd = t;
+                    //use regexp to see if actually image or weirdly implemented error message
+                    if (Regex.IsMatch(t.ImageData, @"^[a-zA-Z0-9\+/]*={0,2}$"))
+                    {
+                        cachedAd = t;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
                 }
                 catch
                 {
+                    // If http error or network error
+                    // if failure is on first request then put placeholder, otherwise just keeps old one
                     if (cachedAd == null)
                     {
                         cachedAd.ImageData = "imagine this is a placeholder base64 string";
