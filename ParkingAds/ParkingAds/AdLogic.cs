@@ -10,18 +10,19 @@ namespace ParkingAds.BusinessLogic
 {
     public class AdLogic : IAdLogic
     {
-        public Ad cachedAd = null;
+        public Ad cachedAd = new Ad();
         public string GetAd()
         {
-            if (cachedAd==null || (cachedAd.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
+            if (cachedAd.ImageData==null || (cachedAd.TimeStamp < DateTime.UtcNow.AddMinutes(-2)))
             {
+                /*
                 if (cachedAd != null)
                 {
                     System.Diagnostics.Debug.WriteLine((cachedAd.TimeStamp < DateTime.UtcNow.AddMinutes(-2)));
                     System.Diagnostics.Debug.WriteLine(DateTime.UtcNow.AddMinutes(-2));
                     System.Diagnostics.Debug.WriteLine((cachedAd.TimeStamp));
                 }
-
+                */
 
 
                 return CacheAd();
