@@ -22,10 +22,10 @@ export class AdService {
     this.handleError = httpErrorHandler.createHandleError('AdService');
   }
 
-  getAd(): Observable<String[]> {
-    debugger;
-    return this.http.get<String[]>(this.url)
-    .pipe(catchError(this.handleError('getAd', []))
-    );
-  }
+  // getAd(): Observable<String[]> {
+  //  // debugger;
+  //   return this.http.get<String[]>(this.url)
+  //   .pipe(catchError(this.handleError('getAd', []))
+  //   );
+  // }
 }

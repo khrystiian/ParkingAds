@@ -1,6 +1,132 @@
 <h1 style="text-align:center; color:brown;">Ad Service Page</h1>
+<div class="container">
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Check receipt</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align:center">Payment receipt</h4>
+        </div>
+        <div class="modal-body" style="margin-left:85px">
+          <!--Receipt content-->
+          <div class="container" id="content" #content>
+            <div class="row">
+              <div class="receipt-main col-xs-4 col-sm-2 col-md-4" id="contentToConvert">
+                <h2 style="text-align:center; color:rgb(0, 2, 5);">Receipt</h2>
+                <div class="row">
+                  <div class="receipt-header receipt-header-mid">
+                    <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                      <div class="receipt-right" style="margin-top:35px">
+                        <h5>ParkingAds <small>  |   Receipt Number : 156</small></h5>
+                        <p><b>Mobile :</b> +91 12345-6777</p>
+                        <p><b>Email :</b> parkingAds@gmail.com</p>
+                        <p><b>Address :</b> Aalborg, Denmark</p>
+                      </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4">
+                      <div class="receipt-left">
+                        <img class="img-responsive" alt="iamgurdeeposahan" src="http://www.gerardoescobedo.com/wp-content/uploads/2018/04/City-logo-370x370.jpg"
+                          style="width:150px; border-radius: 80px;">
+                      </div>
+                    </div>
+                  </div>
 
-  <div *ngFor="let ad of ads">
-    <p>{{ad}}</p>
-    <p></p>
+                  <div>
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Description</th>
+                          <th>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="col-md-9">Payment for August 2016</td>
+                          <td class="col-md-3"><i class="fa fa-inr"></i> 15,000/-</td>
+                        </tr>
+                        <tr>
+                          <td class="col-md-9">Payment for June 2016</td>
+                          <td class="col-md-3"><i class="fa fa-inr"></i> 6,00/-</td>
+                        </tr>
+                        <tr>
+                          <td class="col-md-9">Payment for May 2016</td>
+                          <td class="col-md-3"><i class="fa fa-inr"></i> 35,00/-</td>
+                        </tr>
+                        <tr>
+                          <td class="text-right">
+                            <p>
+                              <strong>Total Amount: </strong>
+                            </p>
+                            <p>
+                              <strong>Late Fees: </strong>
+                            </p>
+                            <p>
+                              <strong>Payable Amount: </strong>
+                            </p>
+                            <p>
+                              <strong>Balance Due: </strong>
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              <strong><i class="fa fa-inr"></i> 65,500/-</strong>
+                            </p>
+                            <p>
+                              <strong><i class="fa fa-inr"></i> 500/-</strong>
+                            </p>
+                            <p>
+                              <strong><i class="fa fa-inr"></i> 1300/-</strong>
+                            </p>
+                            <p>
+                              <strong><i class="fa fa-inr"></i> 9500/-</strong>
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+
+                          <td class="text-right">
+                            <h2><strong>Total: </strong></h2>
+                          </td>
+                          <td class="text-left text-danger">
+                            <h2><strong><i class="fa fa-inr"></i> 31.566/-</strong></h2>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="row">
+                    <div class="receipt-header receipt-header-mid receipt-footer">
+                      <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                        <div class="receipt-right">
+                          <p><b>Date :</b> 15 Aug 2016</p>
+                          <h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
+                        </div>
+                      </div>
+                      <div class="col-xs-4 col-sm-4 col-md-4">
+                        <div class="receipt-left">
+                          <h1>Signature</h1>
+                          <img class="img-responsive" alt="iamgurdeeposahan" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyQQke2cVjaXYxjkfP91sEE4K061eNfyiehjYkRsfRNk_GTEtn8A"
+                            style="width:150px; border-radius: 80px;">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal" style="margin-right:200px" (click)="captureScreen()">Send Receipt to Email</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
+
