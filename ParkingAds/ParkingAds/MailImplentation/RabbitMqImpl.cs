@@ -12,7 +12,7 @@ namespace BusinessLogic.EmailImpl
 {
     public class RabbitMqImpl
     {
-        public void AddMessageToQueue(string json)
+        public void AddMessageToQueue()
         {
             RabbitMqService commonService = new RabbitMqService();
             var connection = commonService.GetRabbitMqConnection();
@@ -21,11 +21,11 @@ namespace BusinessLogic.EmailImpl
             var basicProperties = channel.CreateBasicProperties();
             basicProperties.DeliveryMode = 2;
             MailImpl es = new MailImpl();
-            //var json = "";
-            //using (StreamReader r = new StreamReader("C:\\Users\\andyc\\Desktop\\envelope.json"))
-            //{
-            //    json = r.ReadToEnd();
-            //}
+            var json = "";
+            using (StreamReader r = new StreamReader("C:\\Users\\andyc\\Desktop\\envelope.json"))
+            {
+                json = r.ReadToEnd();
+            }
             byte[] customerBuffer = Encoding.UTF8.GetBytes(json);
             channel.BasicPublish(RabbitMqService.SerialisationExchangeName, RabbitMqService.SerialisationRoutingKey, basicProperties, customerBuffer);
             Thread.Sleep(1000);
