@@ -1,4 +1,5 @@
-﻿using Models.EmailModels;
+﻿using BusinessLogic.EmailImpl;
+using Models.EmailModels;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -6,18 +7,20 @@ using System.Net.Mail;
 
 namespace BusinessLogic
 {
-    public class EmailSetup
+    public class MailImpl
     {
-        public static bool SendMail(string json)
+        public bool SendMail()
         {
             var ok = false;
-            var envelope = LoadJson(json);
+            RabbitMqImpl rbImpl = new RabbitMqImpl();
+
+            var envelope = rbImpl.GetMessageFromQueue();
             SmtpClient clientDetails = new SmtpClient
             {
                 Port = 587,
                 Host = "smtp.gmail.com",
                 EnableSsl = true,
-                Credentials = new NetworkCredential("a.ciobanu19@gmail.com", "password")
+                Credentials = new NetworkCredential("a.ciobanu19@gmail.com", "pwd")
             };
 
             MailMessage mailMessage = new MailMessage
@@ -35,9 +38,7 @@ namespace BusinessLogic
             }
             try
             {
-                clientDetails.Send(mailMessage); //goes to rabbitmq
-                Console.WriteLine("Message sent");
-
+                clientDetails.Send(mailMessage);
                 ok = true;
             }
             catch (Exception ex)
@@ -47,13 +48,12 @@ namespace BusinessLogic
             return ok;
         }
 
-        private static EmailLetter LoadJson(string json)
+        public MailLetter LoadJson(string json)
         {
-            var _jsonDeserialized = JsonConvert.DeserializeObject<EmailLetter>(json);
-
+            var _jsonDeserialized = JsonConvert.DeserializeObject<MailLetter>(json);
             var attachment = new Attachments(_jsonDeserialized.Mime.Attachments.Name);
             var mime = new Mime(_jsonDeserialized.Mime.From, _jsonDeserialized.Mime.To, _jsonDeserialized.Mime.Subject, _jsonDeserialized.Mime.TextVersion, attachment);
-            var emailLetter = new EmailLetter(_jsonDeserialized.Envelope, _jsonDeserialized.Recipient, mime);
+            var emailLetter = new MailLetter(_jsonDeserialized.Envelope, _jsonDeserialized.Recipient, mime);
 
             return emailLetter;
         }

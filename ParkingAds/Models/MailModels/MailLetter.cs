@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Models.EmailModels
 {
-    public class EmailLetter
+    public class MailLetter
     {
-        public EmailLetter()
+        public MailLetter()
         {
         }
 
-        public EmailLetter(string envelope, string recipient, Mime mime)
+        public MailLetter(string envelope, string recipient, Mime mime)
         {
             Envelope = envelope;
             Recipient = recipient;
