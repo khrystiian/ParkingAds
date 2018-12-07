@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Mapping\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
