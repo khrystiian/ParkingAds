@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Controllers.Mapping;
 
@@ -12,27 +9,36 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
+        PaymentLogic paymentLogic = new PaymentLogic();
         // GET: api/Payment
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "value1", "value payment" };
         }
 
         // GET: api/Payment/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetPayment")]
         public PaymentViewModel Get(int id)
         {
             return new PaymentViewModel
             {
-                Base64Receipt = ""
+                base64StringReceipt = ""
             };
         }
 
         // POST: api/Payment
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] PaymentViewModel payment)
         {
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+            if (payment != null)
+            {
+                paymentLogic.Base64Image(payment);
+            }
         }
 
         // PUT: api/Payment/5

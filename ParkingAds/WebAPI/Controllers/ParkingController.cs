@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Parking/5
-        [HttpGet("{name}", Name = "Get")]
+        [HttpGet("{name}", Name = "GetParking")]
         public ParkingLocation Get(string name)
         {
 

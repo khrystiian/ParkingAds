@@ -7,6 +7,6 @@ namespace WebAPI.Controllers.Mapping
 {
     public class PaymentViewModel
     {
-        public string Base64Receipt { get; set; }
+        public string base64StringReceipt { get; set; }
     }
 }

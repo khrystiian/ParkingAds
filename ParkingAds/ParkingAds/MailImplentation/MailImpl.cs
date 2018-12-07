@@ -31,10 +31,11 @@ namespace BusinessLogic
             mailMessage.Subject = envelope.Mime.Subject;
             mailMessage.Body = envelope.Mime.TextVersion;
 
+
             if (envelope.Mime.Attachments.Name.Length > 0)
             {
-                // System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(envelope.Mime._Attachment.Name);
-                //mailMessage.Attachments.Add(attachment);
+                Attachment attachment = new Attachment(envelope.Mime.Attachments.Name);
+                mailMessage.Attachments.Add(attachment);
             }
             try
             {
