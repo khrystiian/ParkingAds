@@ -1,10 +1,9 @@
 ﻿using BusinessLogic.RabbitMq;
+using Models;
 using Models.EmailModels;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System;
-using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -12,45 +11,39 @@ namespace BusinessLogic.EmailImpl
 {
     public class RabbitMqImpl
     {
-        public void AddMessageToQueue()
+        public void AddMessageToQueue(Payment payment)
         {
-            RabbitMqService commonService = new RabbitMqService();
-            var connection = commonService.GetRabbitMqConnection();
-            var channel = connection.CreateModel();
-            commonService.SetupInitialTopicQueue(channel);
+            var mImpl = new MailImpl();
+            var connection = RabbitMqService.RabbitMqConnection;
+            var channel = RabbitMqService.RabbitMqModel;
+            RabbitMqService.SetupInitialTopicQueue(channel);
             var basicProperties = channel.CreateBasicProperties();
             basicProperties.DeliveryMode = 2;
-            MailImpl es = new MailImpl();
-            var json = "";
-            using (StreamReader r = new StreamReader("C:\\Users\\andyc\\Desktop\\envelope.json"))
+            var envelope = new MailLetter
             {
-                json = r.ReadToEnd();
-            }
-            byte[] customerBuffer = Encoding.UTF8.GetBytes(json);
-            channel.BasicPublish(RabbitMqService.SerialisationExchangeName, RabbitMqService.SerialisationRoutingKey, basicProperties, customerBuffer);
-            Thread.Sleep(1000);
-            Console.WriteLine("Message added");  //TO DO
-        }
-
-        public MailLetter GetMessageFromQueue() //TO DO
-        {
-            RabbitMqService commonService = new RabbitMqService();
-            IConnection connection = commonService.GetRabbitMqConnection();
-            IModel model = connection.CreateModel();
-            var deserialized = new MailLetter();
-
-            var consumer = new EventingBasicConsumer(model);
-            consumer.Received += (custumer, ea) =>
-            {
-                var body = ea.Body;
-                var message = Encoding.UTF8.GetString(body);
-                deserialized = JsonConvert.DeserializeObject<MailLetter>(message);
-                Console.WriteLine("Received popped:  {0} and {1}", deserialized.Mime.TextVersion, deserialized.Recipient);
-                Thread.Sleep(1000);
-                model.BasicAck(ea.DeliveryTag, false); 
+                Envelope = "a.ciobanu19@gmail.com", //to be replaced with customer email   //parkingads2019@gmail.com
+                Recipient = "kristi_c41@gmail.com",      //to be replaced           
+                Mime = new Mime
+                {
+                    From = "a.ciobanu19@gmail.com",
+                    To = "kristi_c41@yahoo.com",
+                    Subject = "Receipt payment: ", // complete email subject with payment details
+                    TextVersion = "Dear customer, "
+                     + Environment.NewLine + Environment.NewLine + "Your payment receipment issued "
+                     + DateTime.Now + " is attached above. " + Environment.NewLine +
+                     "Thank you for your doing business with us ! ", //add payment details
+                    Attachments = new Attachments
+                    {
+                        Base64String = payment.Base64Receipt
+                    }
+                }
             };
-            model.BasicConsume(queue: RabbitMqService.SerialisationQueueName, autoAck: false, consumer: consumer);
-            return deserialized;
+            byte[] customerBuffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(envelope));
+            channel.BasicPublish(RabbitMqService.SerialisationExchangeName, RabbitMqService.SerialisationRoutingKey, basicProperties, customerBuffer);
+          //  Thread.Sleep(1000);
+            mImpl.SendMail();
         }
     }
+    
 }
+

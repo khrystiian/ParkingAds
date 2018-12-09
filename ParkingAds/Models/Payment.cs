@@ -6,6 +6,6 @@ namespace Models
 {
     public class Payment
     {
-        public string Base64Receipt { get; set; }
+        public byte[] Base64Receipt { get; set; }
     }
 }

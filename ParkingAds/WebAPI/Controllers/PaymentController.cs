@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        PaymentLogic paymentLogic = new PaymentLogic();
+        IPaymentLogic paymentLogic = new PaymentLogic();
         // GET: api/Payment
         [HttpGet]
         public IEnumerable<string> Get()
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
             }
             if (payment != null)
             {
-                paymentLogic.Base64Image(payment);
+                paymentLogic.Base64Pdf(payment);
             }
         }
 

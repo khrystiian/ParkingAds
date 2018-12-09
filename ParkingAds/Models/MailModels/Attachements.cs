@@ -6,14 +6,6 @@ namespace Models.EmailModels
 {
         public class Attachments
         {
-        public Attachments()
-        {
-        }
-
-        public Attachments(string name)
-        {
-            Name = name;
-        }
-            public string Name { get; set; }
+            public byte[] Base64String { get; set; }
         }
 }
