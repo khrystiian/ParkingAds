@@ -21,8 +21,8 @@ namespace BusinessLogic.EmailImpl
             basicProperties.DeliveryMode = 2;
             var envelope = new MailLetter
             {
-                Envelope = "a.ciobanu19@gmail.com", //to be replaced with customer email   //parkingads2019@gmail.com
-                Recipient = "kristi_c41@gmail.com",      //to be replaced           
+                Envelope = "ParkingAds A/S", //to be replaced with customer email   //parkingads2019@gmail.com
+                Recipient = "Customer",      //to be replaced           
                 Mime = new Mime
                 {
                     From = "a.ciobanu19@gmail.com",
@@ -40,7 +40,6 @@ namespace BusinessLogic.EmailImpl
             };
             byte[] customerBuffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(envelope));
             channel.BasicPublish(RabbitMqService.SerialisationExchangeName, RabbitMqService.SerialisationRoutingKey, basicProperties, customerBuffer);
-          //  Thread.Sleep(1000);
             mImpl.SendMail();
         }
     }

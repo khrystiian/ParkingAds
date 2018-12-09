@@ -31,7 +31,6 @@ namespace BusinessLogic
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
                 envelope = JsonConvert.DeserializeObject<MailLetter>(message);
-               // Thread.Sleep(1000);
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
 
                 #region email
@@ -40,15 +39,16 @@ namespace BusinessLogic
                     Port = 587,
                     Host = "smtp.gmail.com",
                     EnableSsl = true,
-                    Credentials = new NetworkCredential(envelope.Envelope, "cant give you that")  //2019AdsParking
+                    Credentials = new NetworkCredential(envelope.Mime.From, "cant give you that")  //2019AdsParking
                 };
-                var mailMessage = new MailMessage
+
+                var from = new MailAddress(envelope.Mime.From, envelope.Envelope);
+                var to = new MailAddress(envelope.Mime.To, envelope.Recipient);
+                MailMessage mailMessage = new MailMessage(from, to)
                 {
-                    From = new MailAddress(envelope.Mime.From)
+                    Subject = envelope.Mime.Subject,
+                    Body = envelope.Mime.TextVersion
                 };
-                mailMessage.To.Add(envelope.Mime.To);
-                mailMessage.Subject = envelope.Mime.Subject;
-                mailMessage.Body = envelope.Mime.TextVersion;
 
                 if (envelope.Mime.Attachments.Base64String.Length > 0)
                 {

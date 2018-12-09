@@ -5,9 +5,9 @@ namespace BusinessLogic.RabbitMq
     public class RabbitMqService
     {
         //Mail Transfer Agent
-        public static string SerialisationQueueName = "queue_MalerQ1";
-        public static string SerialisationExchangeName = "exchange_MalerQ1";
-        public static string SerialisationRoutingKey = "routingKey_MalerQ1";
+        public static string SerialisationQueueName = "queue_MalerQ";
+        public static string SerialisationExchangeName = "exchange_MalerQ";
+        public static string SerialisationRoutingKey = "routingKey_MalerQ";
 
         private static volatile IConnection _connection;
         private static readonly object ConnectionLock = new object();
@@ -16,8 +16,7 @@ namespace BusinessLogic.RabbitMq
 
         public static IConnection RabbitMqConnection
         {
-            get
-            {
+            get{
                 if (_connection != null)
                 {
                     return _connection;
@@ -41,10 +40,8 @@ namespace BusinessLogic.RabbitMq
             }
         }
 
-        public static IModel RabbitMqModel
-        {
-            get
-            {
+        public static IModel RabbitMqModel{ 
+            get{
                 if (_channel != null)
                 {
                     return _channel;

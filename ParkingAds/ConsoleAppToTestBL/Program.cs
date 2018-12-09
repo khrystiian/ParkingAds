@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading;
 
@@ -14,37 +16,41 @@ namespace ConsoleAppToTestBL
 {
     class Program
     {
-        private static MailLetter deserialized;
 
         static void Main(string[] args)
         {
-            var rbImpl = new RabbitMqImpl();
-            using (var connection = RabbitMqService.RabbitMqConnection)
+            CreateBccTestMessage();
+        }
+
+        public static void CreateBccTestMessage()
+        {
+            MailAddress from = new MailAddress("a.ciobanu19@gmail.com", "sender");
+            MailAddress to = new MailAddress("kristi_c41@yahoo.com", "receiver");
+            MailMessage message = new MailMessage(from, to)
             {
-                using (var channel = RabbitMqService.RabbitMqModel)
-                {
-                    RabbitMqService.SetupInitialTopicQueue(channel);
-                    channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+                Subject = "Using the SmtpClient class.",
+                Body = @"Using this feature, you can send an email message from an application very easily."
+            };
+            SmtpClient client = new SmtpClient
+            {
+                Port = 587,
+                Host = "smtp.gmail.com",
+                EnableSsl = true,
+                Credentials = new NetworkCredential("a.ciobanu19@gmail.com", "bla bla")
+            };
+            Console.WriteLine("Sending an email message from {0} to {1}.", from.DisplayName,
+                to.DisplayName);
+            Console.ReadLine();
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in CreateBccTestMessage(): {0}",
+                            ex.ToString());
+                Console.ReadLine();
 
-                    Console.WriteLine(" [*] Waiting for messages.");
-
-                    var consumer = new EventingBasicConsumer(channel);
-                    consumer.Received += (model, ea) =>
-                    {
-                        var body = ea.Body;
-                        var message = Encoding.UTF8.GetString(body);
-                        deserialized = JsonConvert.DeserializeObject<MailLetter>(message);
-                        Thread.Sleep(1000);
-
-                        Console.WriteLine("have a break " + deserialized.Mime.TextVersion);
-
-                        channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
-                    };
-                    channel.BasicConsume(RabbitMqService.SerialisationQueueName,
-                                         autoAck: false,
-                                         consumer: consumer);
-
-                }
             }
         }
     }
