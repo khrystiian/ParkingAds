@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.EmailImpl;
+using BusinessLogic.MailImplentation;
 using BusinessLogic.RabbitMq;
 using Models.EmailModels;
 using Newtonsoft.Json;
@@ -38,10 +39,9 @@ namespace BusinessLogic
                 {
                     Port = 587,
                     Host = "smtp.gmail.com",
-                    EnableSsl = true,
-                    Credentials = new NetworkCredential(envelope.Mime.From, "cant give you that")  //2019AdsParking
+                    EnableSsl = true,                                               
+                    Credentials = new NetworkCredential(envelope.Mime.From, PasswordHandler.GetPassword())  
                 };
-
                 var from = new MailAddress(envelope.Mime.From, envelope.Envelope);
                 var to = new MailAddress(envelope.Mime.To, envelope.Recipient);
                 MailMessage mailMessage = new MailMessage(from, to)
@@ -49,14 +49,11 @@ namespace BusinessLogic
                     Subject = envelope.Mime.Subject,
                     Body = envelope.Mime.TextVersion
                 };
-
-                if (envelope.Mime.Attachments.Base64String.Length > 0)
-                {
+                if (envelope.Mime.Attachments.Base64String.Length > 0){
                     var attachement = new Attachment(new MemoryStream(envelope.Mime.Attachments.Base64String), "Receipt.pdf", MediaTypeNames.Application.Pdf);
                     mailMessage.Attachments.Add(attachement);
                 }
-                try
-                {
+                try{
                     clientDetails.Send(mailMessage);
                 }
                 catch (Exception ex)

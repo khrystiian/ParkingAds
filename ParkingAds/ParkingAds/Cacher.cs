@@ -74,7 +74,7 @@ namespace BusinessLogic
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
                 try
                 {
-                    var data = httpClient.GetAsync("http://adservice.ws.dm.sof60.dk/api/ad").Result;
+                    var data = httpClient.GetAsync("http://adservice.ws.dm.sof60.dk/api/ad").Result; //place so you can change them on the fly
 
                     var ser = new XmlSerializer(typeof(Ad));
                     var t = (Ad)ser.Deserialize(data.Content.ReadAsStreamAsync().Result);

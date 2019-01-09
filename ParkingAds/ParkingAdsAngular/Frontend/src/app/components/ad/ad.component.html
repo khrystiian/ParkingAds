@@ -1,16 +1,11 @@
-
-
-
 <div class="container">
     <h1 style="text-align:center; color:brown;">Payment Service Page</h1>
   <!-- Sign up form -->
   <form>
-    <!-- Sign up card -->
     <div class="card person-card">
       <div class="card-body">
         <h2 id="who_message" class="card-title">Personal information</h2>
         <br/>
-        <!-- First row (on medium screen) -->
         <div class="row">
           <div class="form-group col-md-2">
             <select id="input_sex" class="form-control">
@@ -19,13 +14,25 @@
             </select>
           </div>
           <div class="form-group col-md-5">
-            <input id="first_name" type="text" class="form-control" placeholder="First name">
+            <input #fname type="text" class="form-control" placeholder="First name">
             <div id="first_name_feedback" class="invalid-feedback">
             </div>
           </div>
           <div class="form-group col-md-5">
-            <input id="last_name" type="text" class="form-control" placeholder="Last name">
+            <input #lname type="text" class="form-control" placeholder="Last name">
             <div id="last_name_feedback" class="invalid-feedback">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <input #email type="text" class="form-control" placeholder="Email">
+            <div id="email_feedback" class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input #address type="text" class="form-control" placeholder="Address">
+            <div id="address_feedback" class="invalid-feedback">
             </div>
           </div>
         </div>
@@ -37,21 +44,21 @@
           <div class="card-body">
             <h2 class="card-title">Parking Location Info</h2>
             <div class="form-group">
-              <label for="email" class="col-form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="example@gmail.com" required>
-              <div class="email-feedback">
+              <label for="plocation" class="col-form-label">Parking location</label>
+              <input #plocation class="form-control" id="plocation" placeholder="parking location" required>
+              <div class="plocation-feedback">
               </div>
             </div>
             <div class="form-group">
-              <label for="tel" class="col-form-label">Phone number</label>
-              <input type="text" class="form-control" id="tel" placeholder="+33 6 99 99 99 99" required>
-              <div class="phone-feedback">
+              <label for="ptime" class="col-form-label">Parking time</label>
+              <input #ptime class="form-control" id="ptime" placeholder="12:00 AM - 12:00 PM" required>
+              <div class="ptime-feedback">
               </div>
             </div>
             <div class="form-group">
-              <label for="tel" class="col-form-label">Information</label>
-              <input type="text" class="form-control" id="tel" placeholder="some text" required>
-              <div class="phone-feedback">
+              <label for="nplate" class="col-form-label">Number plate</label>
+              <input #nrplate type="text" class="form-control" id="nplate" placeholder="Number plate" required>
+              <div class="nplate-feedback">
               </div>
             </div>
           </div>
@@ -62,15 +69,14 @@
           <div class="card-body">
             <h2 class="card-title">Account Information</h2>
             <div class="form-group">
-              <label for="password" class="col-form-label">Full name(on the card)</label>
-              <input type="text" class="form-control" id="password" placeholder="Type your full name" required>
-              <div class="text-feedback">
+              <label for="fullname" class="col-form-label">Full name(on the card)</label>
+              <input type="text" class="form-control" placeholder="Type your full name" required/>
+              <div class="text-feedback">                
               </div>
             </div>
             <div class="form-group">
-              <label for="password_conf" class="col-form-label">Card number</label>
-              <input type="text" class="form-control" id="password_conf" placeholder="Type your card number"
-                required>
+              <label for="card_conf" class="col-form-label">Card number</label>
+              <input type="text" class="form-control" id="card_conf" placeholder="Type your card number" required>
               <div class="password_conf-feedback">
               </div>
             </div>
@@ -89,7 +95,7 @@
             <option>2018</option>
             <option>2019</option>
           </select>
-          <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card" style="margin-left:30px">CVV <i class="fa fa-question-circle"></i></label>
+          <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card" style="margin-left:25px">CVV <i class="fa fa-question-circle"></i></label>
           <input class="form-control" required="" type="text">
             </div>
             
@@ -98,8 +104,8 @@
         </div>
       </div>
     </div>
-    <div>
-      <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal">click to make the payment !</button>
+    <div>        
+      <button type="button" class="btn btn-primary btn-lg btn-block"  data-toggle="modal" data-target="#myModal" (click)="paymentData(fname.value, lname.value, email.value, address.value, plocation.value, ptime.value, nrplate.value)">click to make the payment !</button>
     </div>
   </form>
 </div>
@@ -125,9 +131,12 @@
                     <div class="col-xs-8 col-sm-8 col-md-8 text-left">
                       <div class="receipt-right" style="margin-top:35px">
                         <h5>ParkingAds <small>  |   Receipt Number : 156</small></h5>
-                        <p><b>Mobile :</b> +91 12345-6777</p>
-                        <p><b>Email :</b> parkingAds@gmail.com</p>
-                        <p><b>Address :</b> Aalborg, Denmark</p>
+                        <br/>
+                        <p><b>Full Name :</b>{{ fullname }}</p>
+                        <br/>
+                        <p><b>Email :</b>{{ mail }}</p>
+                        <br/>
+                        <p><b>Address :</b>{{ Address }}</p>
                       </div>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4">
@@ -137,7 +146,6 @@
                       </div>
                     </div>
                   </div>
-
                   <div>
                     <table class="table table-bordered">
                       <thead>
@@ -148,16 +156,16 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td class="col-md-9">Payment for August 2016</td>
-                          <td class="col-md-3"><i class="fa fa-inr"></i> 15,000/-</td>
+                          <td class="col-md-7">Parking Location: </td>
+                          <td class="col-md-5"><i class="Showme">{{ Plocation }}</i></td>
                         </tr>
                         <tr>
-                          <td class="col-md-9">Payment for June 2016</td>
-                          <td class="col-md-3"><i class="fa fa-inr"></i> 6,00/-</td>
+                          <td class="col-md-7">Time period</td>
+                          <td class="col-md-5"><i class="fa fa-inr"></i>{{ Ptime }}</td>
                         </tr>
                         <tr>
-                          <td class="col-md-9">Payment for May 2016</td>
-                          <td class="col-md-3"><i class="fa fa-inr"></i> 35,00/-</td>
+                          <td class="col-md-7">Number Plate</td>
+                          <td class="col-md-5"><i class="fa fa-inr"></i>{{ _nrplate }}</td>
                         </tr>
                         <tr>
                           <td class="text-right">
@@ -170,9 +178,6 @@
                             <p>
                               <strong>Payable Amount: </strong>
                             </p>
-                            <p>
-                              <strong>Balance Due: </strong>
-                            </p>
                           </td>
                           <td>
                             <p>
@@ -184,13 +189,9 @@
                             <p>
                               <strong><i class="fa fa-inr"></i> 1300/-</strong>
                             </p>
-                            <p>
-                              <strong><i class="fa fa-inr"></i> 9500/-</strong>
-                            </p>
                           </td>
                         </tr>
                         <tr>
-
                           <td class="text-right">
                             <h2><strong>Total: </strong></h2>
                           </td>
@@ -206,7 +207,8 @@
                     <div class="receipt-header receipt-header-mid receipt-footer">
                       <div class="col-xs-8 col-sm-8 col-md-8 text-left">
                         <div class="receipt-right">
-                          <p><b>Date :</b> 15 Aug 2016</p>
+                          <p><b>Date :</b> {{myDate | date:'dd-MM-yyyy HH:mm:ss'}}</p>
+                          
                           <h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
                         </div>
                       </div>
@@ -225,3 +227,4 @@
     </div>
   </div>
 </div>
+
